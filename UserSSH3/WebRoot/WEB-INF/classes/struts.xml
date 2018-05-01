@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<include file="struts-default.xml" />  
+    <package name="ynwi" extends="struts-default">  
+        <action name="usernum" class="UserAction">  
+            <result name="input">/index.jsp</result>  
+            <result name="success">/Success.jsp</result>  
+            <result name="error">/Fail.jsp</result>  
+        </action>  
+    </package>  
+</struts>    

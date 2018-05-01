@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+<!-- 定义数据源的信息 -->  
+  <!--   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  
+        destroy-method="close">  
+        <property name="driverClass">  
+            <value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>  
+        </property>  
+        <property name="jdbcUrl">  
+            <value>jdbc:sqlserver://localhost:1433;DataBaseName=userSSh</value>  
+        </property>  
+        <property name="user">  
+            <value>sa</value>  
+        </property>  
+        <property name="password">  
+            <value>123</value>  
+        </property>  
+        <property name="maxPoolSize">  
+            <value>80</value>  
+        </property>  
+        <property name="minPoolSize">  
+            <value>1</value>  
+        </property>  
+        <property name="initialPoolSize">  
+            <value>1</value>  
+        </property>  
+        <property name="maxIdleTime">  
+            <value>20</value>  
+        </property>  
+    </bean>   -->
+  	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.microsoft.sqlserver.jdbc.SQLServerDriver">
+		</property>
+		<property name="url"
+			value="jdbc:sqlserver://localhost:1433;DataBaseName=userSSh">
+		</property>
+		<property name="username" value="sa"></property>
+		<property name="password" value="123"></property>
+	</bean>
+    <!--定义Hibernate的SessionFactory -->  
+    <!-- SessionFactory使用的数据源为上面的数据源 -->  
+    <!-- 指定了Hibernate的映射文件和配置信息 -->  
+    <bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">  
+        <property name="dataSource">  
+            <ref local="dataSource" />  
+        </property>  
+ 
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>  
+                <prop key="hibernate.show_sql">true</prop>  
+                <prop key="hibernate.jdbc.batch_size">20</prop>  
+            </props>  
+        </property>  
+               <property name="mappingResources">  
+            <list>  
+                <value>com/bean/T_User.hbm.xml</value>  
+            </list>  
+        </property> 
+        	
+    </bean>  
+
+	<!--  <bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	-->
+	<bean id="SpringHibernateDao" class="com.dao.SpringHibernateDao">  
+        <property name="sessionFactory">  
+            <ref bean="sessionFactory" />  
+        </property>  
+    </bean>  
+	    <!-- 用户注册的Action -->  
+    <bean id="UserAction" class="com.action.UserAction">  
+        <property name="shdao">  
+            <ref bean="SpringHibernateDao" />  
+        </property>  
+    </bean>  
+	
+	</beans>
